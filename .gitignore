@@ -9,5 +9,9 @@ Desktop.ini
 .metadata
 Servers
 bin
-target
 *.jar
+
+.classpath
+.project
+.settings/
+target/
