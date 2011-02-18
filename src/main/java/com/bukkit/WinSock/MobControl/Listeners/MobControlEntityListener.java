@@ -140,10 +140,12 @@ public class MobControlEntityListener extends EntityListener {
 				+ ".Day.Burn";
 		String spawnHeightNode = "MobControl.Mobs."
 				+ mobType.getName().toUpperCase() + ".SpawnHeight";
+		String spawnChanceNode = "MobControl.Mobs."
+			+ mobType.getName().toUpperCase() + ".SpawnChance";
 
 		if (!plugin.canSpawn(event.getLocation(), plugin.getConfiguration()
 				.getInt(spawnHeightNode, 0), plugin.getConfiguration()
-				.getBoolean(enabledNode, true))) {
+				.getBoolean(enabledNode, true), plugin.getConfiguration().getInt(spawnChanceNode, 100))) {
 			event.setCancelled(true);
 		} else if (plugin.getConfiguration().getBoolean(burnNode, false)) {
 			if (event.getLocation().getWorld().getTime() < 12000

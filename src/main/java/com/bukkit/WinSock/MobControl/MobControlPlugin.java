@@ -2,6 +2,7 @@ package com.bukkit.WinSock.MobControl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.logging.Logger;
 
 import org.bukkit.Location;
@@ -79,17 +80,52 @@ public class MobControlPlugin extends JavaPlugin {
 			return false;
 		}
 	}
+	
+	public boolean spawnChance(int precent)
+	{
+		Random random = new Random();
+		if (precent >= 100)
+		{
+			return true;
+		}
+		else if (precent <= 0)
+		{
+			return false;
+		}
+		else if (random.nextInt(100) <= precent)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
-	public boolean canSpawn(Location spawnLoc, int spawnHeight, boolean enabled) {
+	public boolean canSpawn(Location spawnLoc, int spawnHeight, boolean enabled, int precent) {
 		if (enabled) {
 			if (spawnHeight != 0) {
 				if (spawnLoc.getBlockY() > spawnHeight) {
-					return true;
+					if (spawnChance(precent))
+					{
+						return true;
+					}
+					else
+					{
+						return false;
+					}
 				} else {
 					return false;
 				}
 			} else {
-				return true;
+				if (spawnChance(precent))
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
 			}
 		} else {
 			return false;
@@ -225,24 +261,28 @@ public class MobControlPlugin extends JavaPlugin {
 			// Default Settings
 			config.setProperty("MobControl.Mobs.PIG.Enabled", true);
 			config.setProperty("MobControl.Mobs.PIG.SpawnHeight", 0);
+			config.setProperty("MobControl.Mobs.PIG.SpawnChance", 100);
 			config.setProperty("MobControl.Mobs.PIG.Day.Nature", "Passive");
 			config.setProperty("MobControl.Mobs.PIG.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.PIG.Night.Nature", "Passive");
 
 			config.setProperty("MobControl.Mobs.COW.Enabled", true);
 			config.setProperty("MobControl.Mobs.COW.SpawnHeight", 0);
+			config.setProperty("MobControl.Mobs.COW.SpawnChance", 100);
 			config.setProperty("MobControl.Mobs.COW.Day.Nature", "Passive");
 			config.setProperty("MobControl.Mobs.COW.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.COW.Night.Nature", "Passive");
 
 			config.setProperty("MobControl.Mobs.SHEEP.Enabled", true);
 			config.setProperty("MobControl.Mobs.SHEEP.SpawnHeight", 0);
+			config.setProperty("MobControl.Mobs.SHEEP.SpawnChance", 100);
 			config.setProperty("MobControl.Mobs.SHEEP.Day.Nature", "Passive");
 			config.setProperty("MobControl.Mobs.SHEEP.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.SHEEP.Night.Nature", "Passive");
 
 			config.setProperty("MobControl.Mobs.CHICKEN.Enabled", true);
 			config.setProperty("MobControl.Mobs.CHICKEN.SpawnHeight", 0);
+			config.setProperty("MobControl.Mobs.CHICKEN.SpawnChance", 100);
 			config.setProperty("MobControl.Mobs.CHICKEN.Day.Nature", "Passive");
 			config.setProperty("MobControl.Mobs.CHICKEN.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.CHICKEN.Night.Nature",
@@ -250,12 +290,14 @@ public class MobControlPlugin extends JavaPlugin {
 
 			config.setProperty("MobControl.Mobs.SQUID.Enabled", true);
 			config.setProperty("MobControl.Mobs.SQUID.SpawnHeight", 0);
+			config.setProperty("MobControl.Mobs.SQUID.SpawnChance", 100);
 			config.setProperty("MobControl.Mobs.SQUID.Day.Nature", "Passive");
 			config.setProperty("MobControl.Mobs.SQUID.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.SQUID.Night.Nature", "Passive");
 
 			config.setProperty("MobControl.Mobs.PIG_ZOMBIE.Enabled", true);
 			config.setProperty("MobControl.Mobs.PIG_ZOMBIE.SpawnHeight", 0);
+			config.setProperty("MobControl.Mobs.PIG_ZOMBIE.SpawnChance", 100);
 			config.setProperty("MobControl.Mobs.PIG_ZOMBIE.Day.Nature",
 					"Neutral");
 			config.setProperty("MobControl.Mobs.PIG_ZOMBIE.Day.Burn", false);
@@ -264,6 +306,7 @@ public class MobControlPlugin extends JavaPlugin {
 
 			config.setProperty("MobControl.Mobs.SPIDER.Enabled", true);
 			config.setProperty("MobControl.Mobs.SPIDER.SpawnHeight", 0);
+			config.setProperty("MobControl.Mobs.SPIDER.SpawnChance", 100);
 			config.setProperty("MobControl.Mobs.SPIDER.Day.Nature", "Neutral");
 			config.setProperty("MobControl.Mobs.SPIDER.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.SPIDER.Night.Nature",
@@ -271,6 +314,7 @@ public class MobControlPlugin extends JavaPlugin {
 
 			config.setProperty("MobControl.Mobs.ZOMBIE.Enabled", true);
 			config.setProperty("MobControl.Mobs.ZOMBIE.SpawnHeight", 0);
+			config.setProperty("MobControl.Mobs.ZOMBIE.SpawnChance", 100);
 			config.setProperty("MobControl.Mobs.ZOMBIE.Day.Nature",
 					"Aggressive");
 			config.setProperty("MobControl.Mobs.ZOMBIE.Day.Burn", true);
@@ -279,6 +323,7 @@ public class MobControlPlugin extends JavaPlugin {
 
 			config.setProperty("MobControl.Mobs.SKELETON.Enabled", true);
 			config.setProperty("MobControl.Mobs.SKELETON.SpawnHeight", 0);
+			config.setProperty("MobControl.Mobs.SKELETON.SpawnChance", 100);
 			config.setProperty("MobControl.Mobs.SKELETON.Day.Nature",
 					"Aggressive");
 			config.setProperty("MobControl.Mobs.SKELETON.Day.Burn", true);
@@ -287,6 +332,7 @@ public class MobControlPlugin extends JavaPlugin {
 
 			config.setProperty("MobControl.Mobs.CREEPER.Enabled", true);
 			config.setProperty("MobControl.Mobs.CREEPER.SpawnHeight", 0);
+			config.setProperty("MobControl.Mobs.CREEPER.SpawnChance", 100);
 			config.setProperty("MobControl.Mobs.CREEPER.Day.Nature",
 					"Aggressive");
 			config.setProperty("MobControl.Mobs.CREEPER.Day.Burn", false);
@@ -295,6 +341,7 @@ public class MobControlPlugin extends JavaPlugin {
 
 			config.setProperty("MobControl.Mobs.SLIME.Enabled", true);
 			config.setProperty("MobControl.Mobs.SLIME.SpawnHeight", 0);
+			config.setProperty("MobControl.Mobs.SLIME.SpawnChance", 100);
 			config.setProperty("MobControl.Mobs.SLIME.Day.Nature", "Aggressive");
 			config.setProperty("MobControl.Mobs.SLIME.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.SLIME.Night.Nature",
@@ -302,6 +349,7 @@ public class MobControlPlugin extends JavaPlugin {
 
 			config.setProperty("MobControl.Mobs.GHAST.Enabled", true);
 			config.setProperty("MobControl.Mobs.GHAST.SpawnHeight", 0);
+			config.setProperty("MobControl.Mobs.GHAST.SpawnChance", 100);
 			config.setProperty("MobControl.Mobs.GHAST.Day.Nature", "Aggressive");
 			config.setProperty("MobControl.Mobs.GHAST.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.GHAST.Night.Nature",
