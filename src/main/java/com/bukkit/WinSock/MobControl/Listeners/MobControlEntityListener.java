@@ -63,8 +63,7 @@ public class MobControlEntityListener extends EntityListener {
 					Creature c = (Creature) event.getEntity();
 					if (event.getDamager() instanceof LivingEntity) {
 						c.setTarget((LivingEntity) event.getDamager());
-						if (!attacked.contains(c))
-						{
+						if (!attacked.contains(c)) {
 							attacked.add(c);
 						}
 					}
@@ -78,8 +77,7 @@ public class MobControlEntityListener extends EntityListener {
 					Creature c = (Creature) event.getEntity();
 					if (event.getDamager() instanceof LivingEntity) {
 						c.setTarget((LivingEntity) event.getDamager());
-						if (!attacked.contains(c))
-						{
+						if (!attacked.contains(c)) {
 							attacked.add(c);
 						}
 					}
@@ -99,8 +97,7 @@ public class MobControlEntityListener extends EntityListener {
 		} else if (event.getReason() == TargetReason.TARGET_ATTACKED_ENTITY) {
 			if (event.getEntity() instanceof Creature) {
 				Creature c = (Creature) event.getEntity();
-				if (!attacked.contains(c))
-				{
+				if (!attacked.contains(c)) {
 					attacked.add(c);
 				}
 			}
@@ -141,8 +138,12 @@ public class MobControlEntityListener extends EntityListener {
 				+ mobType.getName().toUpperCase() + ".Enabled";
 		String burnNode = "MobControl.Mobs." + mobType.getName().toUpperCase()
 				+ ".Day.Burn";
+		String spawnHeightNode = "MobControl.Mobs."
+				+ mobType.getName().toUpperCase() + ".SpawnHeight";
 
-		if (!plugin.getConfiguration().getBoolean(enabledNode, true)) {
+		if (!plugin.canSpawn(event.getLocation(), plugin.getConfiguration()
+				.getInt(spawnHeightNode, 0), plugin.getConfiguration()
+				.getBoolean(enabledNode, true))) {
 			event.setCancelled(true);
 		} else if (plugin.getConfiguration().getBoolean(burnNode, false)) {
 			if (event.getLocation().getWorld().getTime() < 12000

@@ -4,53 +4,34 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityLiving;
-import net.minecraft.server.EntityPlayer;
-
+import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Animals;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Boat;
 import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Cow;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Creeper;
-import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.FallingSand;
-import org.bukkit.entity.Fireball;
-import org.bukkit.entity.Fish;
 import org.bukkit.entity.Flying;
 import org.bukkit.entity.Ghast;
 import org.bukkit.entity.Giant;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Minecart;
 import org.bukkit.entity.MobType;
 import org.bukkit.entity.Monster;
-import org.bukkit.entity.Painting;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.PigZombie;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Slime;
-import org.bukkit.entity.Snowball;
 import org.bukkit.entity.Spider;
 import org.bukkit.entity.Squid;
-import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.WaterMob;
 import org.bukkit.entity.Zombie;
-import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.PluginManager;
@@ -62,7 +43,7 @@ import com.bukkit.WinSock.MobControl.Listeners.MobControlEntityListener;
 public class MobControlPlugin extends JavaPlugin {
 
 	MobControlEntityListener entityListener = new MobControlEntityListener(this);
-	
+
 	Logger log = null;
 	private PluginDescriptionFile pdfFile = this.getDescription();
 
@@ -74,8 +55,7 @@ public class MobControlPlugin extends JavaPlugin {
 	}
 
 	public void onDisable() {
-		log.info("[" + pdfFile.getName() + "] Version "
-				+ pdfFile.getVersion()
+		log.info("[" + pdfFile.getName() + "] Version " + pdfFile.getVersion()
 				+ " is disabled!");
 	}
 
@@ -95,6 +75,22 @@ public class MobControlPlugin extends JavaPlugin {
 		}
 		if (e instanceof Monster) {
 			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean canSpawn(Location spawnLoc, int spawnHeight, boolean enabled) {
+		if (enabled) {
+			if (spawnHeight != 0) {
+				if (spawnLoc.getBlockY() > spawnHeight) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return true;
+			}
 		} else {
 			return false;
 		}
@@ -150,7 +146,7 @@ public class MobControlPlugin extends JavaPlugin {
 
 	public void onEnable() {
 		log = Logger.getLogger("Minecraft");
-		
+
 		// Load config file
 		Configuration config = this.getConfiguration();
 		loadSettings(config);
@@ -210,8 +206,7 @@ public class MobControlPlugin extends JavaPlugin {
 						}
 					}
 				}, 0L, 10L);
-		log.info("[" + pdfFile.getName() + "] Version "
-				+ pdfFile.getVersion()
+		log.info("[" + pdfFile.getName() + "] Version " + pdfFile.getVersion()
 				+ " is enabled!");
 	}
 
@@ -229,37 +224,38 @@ public class MobControlPlugin extends JavaPlugin {
 
 			// Default Settings
 			config.setProperty("MobControl.Mobs.PIG.Enabled", true);
+			config.setProperty("MobControl.Mobs.PIG.SpawnHeight", 0);
 			config.setProperty("MobControl.Mobs.PIG.Day.Nature", "Passive");
 			config.setProperty("MobControl.Mobs.PIG.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.PIG.Night.Nature", "Passive");
 
 			config.setProperty("MobControl.Mobs.COW.Enabled", true);
+			config.setProperty("MobControl.Mobs.COW.SpawnHeight", 0);
 			config.setProperty("MobControl.Mobs.COW.Day.Nature", "Passive");
 			config.setProperty("MobControl.Mobs.COW.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.COW.Night.Nature", "Passive");
 
 			config.setProperty("MobControl.Mobs.SHEEP.Enabled", true);
-			config.setProperty("MobControl.Mobs.SHEEP.Day.Nature", "Passive");
-			config.setProperty("MobControl.Mobs.SHEEP.Day.Burn", false);
-			config.setProperty("MobControl.Mobs.SHEEP.Night.Nature", "Passive");
-
-			config.setProperty("MobControl.Mobs.SHEEP.Enabled", true);
+			config.setProperty("MobControl.Mobs.SHEEP.SpawnHeight", 0);
 			config.setProperty("MobControl.Mobs.SHEEP.Day.Nature", "Passive");
 			config.setProperty("MobControl.Mobs.SHEEP.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.SHEEP.Night.Nature", "Passive");
 
 			config.setProperty("MobControl.Mobs.CHICKEN.Enabled", true);
+			config.setProperty("MobControl.Mobs.CHICKEN.SpawnHeight", 0);
 			config.setProperty("MobControl.Mobs.CHICKEN.Day.Nature", "Passive");
 			config.setProperty("MobControl.Mobs.CHICKEN.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.CHICKEN.Night.Nature",
 					"Passive");
 
 			config.setProperty("MobControl.Mobs.SQUID.Enabled", true);
+			config.setProperty("MobControl.Mobs.SQUID.SpawnHeight", 0);
 			config.setProperty("MobControl.Mobs.SQUID.Day.Nature", "Passive");
 			config.setProperty("MobControl.Mobs.SQUID.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.SQUID.Night.Nature", "Passive");
 
 			config.setProperty("MobControl.Mobs.PIG_ZOMBIE.Enabled", true);
+			config.setProperty("MobControl.Mobs.PIG_ZOMBIE.SpawnHeight", 0);
 			config.setProperty("MobControl.Mobs.PIG_ZOMBIE.Day.Nature",
 					"Neutral");
 			config.setProperty("MobControl.Mobs.PIG_ZOMBIE.Day.Burn", false);
@@ -267,12 +263,14 @@ public class MobControlPlugin extends JavaPlugin {
 					"Neutral");
 
 			config.setProperty("MobControl.Mobs.SPIDER.Enabled", true);
+			config.setProperty("MobControl.Mobs.SPIDER.SpawnHeight", 0);
 			config.setProperty("MobControl.Mobs.SPIDER.Day.Nature", "Neutral");
 			config.setProperty("MobControl.Mobs.SPIDER.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.SPIDER.Night.Nature",
 					"Aggressive");
 
 			config.setProperty("MobControl.Mobs.ZOMBIE.Enabled", true);
+			config.setProperty("MobControl.Mobs.ZOMBIE.SpawnHeight", 0);
 			config.setProperty("MobControl.Mobs.ZOMBIE.Day.Nature",
 					"Aggressive");
 			config.setProperty("MobControl.Mobs.ZOMBIE.Day.Burn", true);
@@ -280,6 +278,7 @@ public class MobControlPlugin extends JavaPlugin {
 					"Aggressive");
 
 			config.setProperty("MobControl.Mobs.SKELETON.Enabled", true);
+			config.setProperty("MobControl.Mobs.SKELETON.SpawnHeight", 0);
 			config.setProperty("MobControl.Mobs.SKELETON.Day.Nature",
 					"Aggressive");
 			config.setProperty("MobControl.Mobs.SKELETON.Day.Burn", true);
@@ -287,6 +286,7 @@ public class MobControlPlugin extends JavaPlugin {
 					"Aggressive");
 
 			config.setProperty("MobControl.Mobs.CREEPER.Enabled", true);
+			config.setProperty("MobControl.Mobs.CREEPER.SpawnHeight", 0);
 			config.setProperty("MobControl.Mobs.CREEPER.Day.Nature",
 					"Aggressive");
 			config.setProperty("MobControl.Mobs.CREEPER.Day.Burn", false);
@@ -294,12 +294,14 @@ public class MobControlPlugin extends JavaPlugin {
 					"Aggressive");
 
 			config.setProperty("MobControl.Mobs.SLIME.Enabled", true);
+			config.setProperty("MobControl.Mobs.SLIME.SpawnHeight", 0);
 			config.setProperty("MobControl.Mobs.SLIME.Day.Nature", "Aggressive");
 			config.setProperty("MobControl.Mobs.SLIME.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.SLIME.Night.Nature",
 					"Aggressive");
 
 			config.setProperty("MobControl.Mobs.GHAST.Enabled", true);
+			config.setProperty("MobControl.Mobs.GHAST.SpawnHeight", 0);
 			config.setProperty("MobControl.Mobs.GHAST.Day.Nature", "Aggressive");
 			config.setProperty("MobControl.Mobs.GHAST.Day.Burn", false);
 			config.setProperty("MobControl.Mobs.GHAST.Night.Nature",
