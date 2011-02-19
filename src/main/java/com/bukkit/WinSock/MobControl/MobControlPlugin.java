@@ -198,8 +198,8 @@ public class MobControlPlugin extends JavaPlugin {
 				this);
 		pm.registerEvent(Type.ENTITY_DEATH, entityListener, Priority.Highest,
 				this);
-		pm.registerEvent(Type.ENTITY_DAMAGEDBY_ENTITY, entityListener,
-				Priority.Highest, this);
+		pm.registerEvent(Type.ENTITY_DAMAGED, entityListener, Priority.Highest,
+				this);
 		pm.registerEvent(Type.ENTITY_EXPLODE, entityListener, Priority.Highest,
 				this);
 

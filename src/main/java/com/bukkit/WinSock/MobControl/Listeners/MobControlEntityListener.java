@@ -11,6 +11,7 @@ import org.bukkit.entity.MobType;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityListener;
@@ -51,35 +52,38 @@ public class MobControlEntityListener extends EntityListener {
 	}
 
 	@Override
-	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-		CreatureType cType = plugin.getCreatureType(event.getEntity());
-		if (cType != null) {
-			if (event.getEntity().getLocation().getWorld().getTime() < 12000
-					|| event.getEntity().getLocation().getWorld().getTime() == 24000) {
-				String natureLightNode = "MobControl.Mobs."
-						+ cType.getName().toUpperCase() + ".Day.Nature";
-				String data = plugin.getConfiguration().getString(
-						natureLightNode);
-				if (plugin.shouldTarget(event.getEntity(), data, true)) {
-					Creature c = (Creature) event.getEntity();
-					if (event.getDamager() instanceof LivingEntity) {
-						c.setTarget((LivingEntity) event.getDamager());
-						if (!attacked.contains(c)) {
-							attacked.add(c);
+	public void onEntityDamage(EntityDamageEvent event) {
+		if (event instanceof EntityDamageByEntityEvent) {
+			EntityDamageByEntityEvent dmgByEntity = (EntityDamageByEntityEvent) event;
+			CreatureType cType = plugin.getCreatureType(event.getEntity());
+			if (cType != null) {
+				if (event.getEntity().getLocation().getWorld().getTime() < 12000
+						|| event.getEntity().getLocation().getWorld().getTime() == 24000) {
+					String natureLightNode = "MobControl.Mobs."
+							+ cType.getName().toUpperCase() + ".Day.Nature";
+					String data = plugin.getConfiguration().getString(
+							natureLightNode);
+					if (plugin.shouldTarget(event.getEntity(), data, true)) {
+						Creature c = (Creature) event.getEntity();
+						if (dmgByEntity.getDamager() instanceof LivingEntity) {
+							c.setTarget((LivingEntity) dmgByEntity.getDamager());
+							if (!attacked.contains(c)) {
+								attacked.add(c);
+							}
 						}
 					}
-				}
-			} else {
-				String natureNightNode = "MobControl.Mobs."
-						+ cType.getName().toUpperCase() + ".Night.Nature";
-				String data = plugin.getConfiguration().getString(
-						natureNightNode);
-				if (plugin.shouldTarget(event.getEntity(), data, true)) {
-					Creature c = (Creature) event.getEntity();
-					if (event.getDamager() instanceof LivingEntity) {
-						c.setTarget((LivingEntity) event.getDamager());
-						if (!attacked.contains(c)) {
-							attacked.add(c);
+				} else {
+					String natureNightNode = "MobControl.Mobs."
+							+ cType.getName().toUpperCase() + ".Night.Nature";
+					String data = plugin.getConfiguration().getString(
+							natureNightNode);
+					if (plugin.shouldTarget(event.getEntity(), data, true)) {
+						Creature c = (Creature) event.getEntity();
+						if (dmgByEntity.getDamager() instanceof LivingEntity) {
+							c.setTarget((LivingEntity) dmgByEntity.getDamager());
+							if (!attacked.contains(c)) {
+								attacked.add(c);
+							}
 						}
 					}
 				}
