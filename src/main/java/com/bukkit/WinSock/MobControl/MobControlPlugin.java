@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Cow;
@@ -80,52 +79,55 @@ public class MobControlPlugin extends JavaPlugin {
 			return false;
 		}
 	}
-	
-	public boolean spawnChance(int precent)
-	{
+
+	public boolean spawnChance(int precent) {
 		Random random = new Random();
-		if (precent >= 100)
-		{
+		if (precent >= 100) {
 			return true;
-		}
-		else if (precent <= 0)
-		{
+		} else if (precent <= 0) {
 			return false;
-		}
-		else if (random.nextInt(100) <= precent)
-		{
+		} else if (random.nextInt(100) <= precent) {
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
 
-	public boolean canSpawn(Location spawnLoc, int spawnHeight, boolean enabled, int precent) {
+	public int getNumberOfCreatures(Location loc) {
+		int creatures = 0;
+		for (Entity e : loc.getWorld().getEntities()) {
+			if (e instanceof Creature) {
+				creatures++;
+			}
+		}
+		return creatures;
+	}
+
+	public boolean canSpawn(Location spawnLoc, int spawnHeight,
+			boolean enabled, int precent) {
+		String maxNode = "MobControl.Mobs.Max";
+		int maxMobs = this.getConfiguration().getInt(maxNode, 0);
 		if (enabled) {
-			if (spawnHeight != 0) {
-				if (spawnLoc.getBlockY() > spawnHeight) {
-					if (spawnChance(precent))
-					{
-						return true;
-					}
-					else
-					{
+			if (maxMobs == 0 || getNumberOfCreatures(spawnLoc) < maxMobs) {
+				if (spawnHeight != 0) {
+					if (spawnLoc.getBlockY() > spawnHeight) {
+						if (spawnChance(precent)) {
+							return true;
+						} else {
+							return false;
+						}
+					} else {
 						return false;
 					}
 				} else {
-					return false;
+					if (spawnChance(precent)) {
+						return true;
+					} else {
+						return false;
+					}
 				}
 			} else {
-				if (spawnChance(precent))
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
+				return false;
 			}
 		} else {
 			return false;
@@ -211,40 +213,41 @@ public class MobControlPlugin extends JavaPlugin {
 									if (e instanceof Creature) {
 										if (getCreatureType(e) != null) {
 											String enabledNode = "MobControl.Mobs."
-												+ getCreatureType(e).getName().toUpperCase() + ".Enabled";
-											if (!getConfiguration().getBoolean(enabledNode, true)) {
-												Creature c = (Creature)e;
-												c.setHealth(0);
-											}
-											else
-											{
-											
-											String burnNode = "MobControl.Mobs."
 													+ getCreatureType(e)
 															.getName()
 															.toUpperCase()
-													+ ".Day.Burn";
-											if (getConfiguration().getBoolean(
-													burnNode, false)) {
-												if (w.getTime() < 12000
-														|| w.getTime() == 24000) {
-													if (e.getLocation()
-															.getWorld()
-															.getBlockAt(
-																	e.getLocation()
-																			.getBlockX(),
-																	e.getLocation()
-																			.getBlockY() + 1,
-																	e.getLocation()
-																			.getBlockZ())
-															.getLightLevel() > 7) {
-														CraftEntity ce = (CraftEntity) e;
-														ce.getHandle().fireTicks = 20;
-														ce.getHandle().maxFireTicks = 220;
+													+ ".Enabled";
+											if (!getConfiguration().getBoolean(
+													enabledNode, true)) {
+												Creature c = (Creature) e;
+												c.setHealth(0);
+											} else {
+
+												String burnNode = "MobControl.Mobs."
+														+ getCreatureType(e)
+																.getName()
+																.toUpperCase()
+														+ ".Day.Burn";
+												if (getConfiguration()
+														.getBoolean(burnNode,
+																false)) {
+													if (w.getTime() < 12000
+															|| w.getTime() == 24000) {
+														if (e.getLocation()
+																.getWorld()
+																.getBlockAt(
+																		e.getLocation()
+																				.getBlockX(),
+																		e.getLocation()
+																				.getBlockY() + 1,
+																		e.getLocation()
+																				.getBlockZ())
+																.getLightLevel() > 7) {
+															e.setFireTicks(20);
+														}
 													}
 												}
 											}
-										}
 										}
 									}
 								}
@@ -269,6 +272,8 @@ public class MobControlPlugin extends JavaPlugin {
 			}
 
 			// Default Settings
+			config.setProperty("MobControl.Mobs.Max", 0);
+
 			config.setProperty("MobControl.Mobs.PIG.Enabled", true);
 			config.setProperty("MobControl.Mobs.PIG.SpawnHeight", 0);
 			config.setProperty("MobControl.Mobs.PIG.SpawnChance", 100);

@@ -3,9 +3,9 @@ package com.bukkit.WinSock.MobControl.Listeners;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.MobType;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -141,11 +141,12 @@ public class MobControlEntityListener extends EntityListener {
 		String spawnHeightNode = "MobControl.Mobs."
 				+ mobType.getName().toUpperCase() + ".SpawnHeight";
 		String spawnChanceNode = "MobControl.Mobs."
-			+ mobType.getName().toUpperCase() + ".SpawnChance";
+				+ mobType.getName().toUpperCase() + ".SpawnChance";
 
 		if (!plugin.canSpawn(event.getLocation(), plugin.getConfiguration()
 				.getInt(spawnHeightNode, 0), plugin.getConfiguration()
-				.getBoolean(enabledNode, true), plugin.getConfiguration().getInt(spawnChanceNode, 100))) {
+				.getBoolean(enabledNode, true), plugin.getConfiguration()
+				.getInt(spawnChanceNode, 100))) {
 			event.setCancelled(true);
 		} else if (plugin.getConfiguration().getBoolean(burnNode, false)) {
 			if (event.getLocation().getWorld().getTime() < 12000
@@ -157,9 +158,8 @@ public class MobControlEntityListener extends EntityListener {
 								event.getLocation().getBlockY() + 1,
 								event.getLocation().getBlockZ())
 						.getLightLevel() > 7) {
-					CraftEntity ce = (CraftEntity) event.getEntity();
-					ce.getHandle().fireTicks = 20;
-					ce.getHandle().maxFireTicks = 220;
+					Entity e = event.getEntity();
+					e.setFireTicks(20);
 				}
 			}
 		}
