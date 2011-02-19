@@ -210,6 +210,15 @@ public class MobControlPlugin extends JavaPlugin {
 								for (Entity e : w.getEntities()) {
 									if (e instanceof Creature) {
 										if (getCreatureType(e) != null) {
+											String enabledNode = "MobControl.Mobs."
+												+ getCreatureType(e).getName().toUpperCase() + ".Enabled";
+											if (!getConfiguration().getBoolean(enabledNode, true)) {
+												Creature c = (Creature)e;
+												c.setHealth(0);
+											}
+											else
+											{
+											
 											String burnNode = "MobControl.Mobs."
 													+ getCreatureType(e)
 															.getName()
@@ -235,6 +244,7 @@ public class MobControlPlugin extends JavaPlugin {
 													}
 												}
 											}
+										}
 										}
 									}
 								}
