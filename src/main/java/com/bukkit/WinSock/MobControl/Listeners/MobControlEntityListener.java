@@ -12,6 +12,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
@@ -104,6 +105,37 @@ public class MobControlEntityListener extends EntityListener {
 		} else if (!(event.getReason() == TargetReason.CUSTOM)) {
 			CreatureType cType = plugin.getCreatureType(event.getEntity());
 			if (cType != null) {
+				if (event.getEntity().getLocation().getWorld().getTime() < 12000
+						|| event.getEntity().getLocation().getWorld().getTime() == 24000) {
+					String natureLightNode = "MobControl.Mobs."
+							+ cType.getName().toUpperCase() + ".Day.Nature";
+					String data = plugin.getConfiguration().getString(
+							natureLightNode);
+					Creature c = (Creature) event.getEntity();
+					if (!plugin.shouldTarget(event.getEntity(), data,
+							attacked.contains(c))) {
+						event.setCancelled(true);
+					}
+				} else {
+					String natureNightNode = "MobControl.Mobs."
+							+ cType.getName().toUpperCase() + ".Night.Nature";
+					String data = plugin.getConfiguration().getString(
+							natureNightNode);
+					Creature c = (Creature) event.getEntity();
+					if (!plugin.shouldTarget(event.getEntity(), data,
+							attacked.contains(c))) {
+						event.setCancelled(true);
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onEntityExplode(EntityExplodeEvent event) {
+		CreatureType cType = plugin.getCreatureType(event.getEntity());
+		if (cType != null) {
+			if (cType == CreatureType.CREEPER) {
 				if (event.getEntity().getLocation().getWorld().getTime() < 12000
 						|| event.getEntity().getLocation().getWorld().getTime() == 24000) {
 					String natureLightNode = "MobControl.Mobs."

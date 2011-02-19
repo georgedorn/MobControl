@@ -51,7 +51,6 @@ public class MobControlPlugin extends JavaPlugin {
 			PluginDescriptionFile desc, File folder, File plugin,
 			ClassLoader cLoader) {
 		super(pluginLoader, instance, desc, folder, plugin, cLoader);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void onDisable() {
@@ -201,6 +200,8 @@ public class MobControlPlugin extends JavaPlugin {
 				this);
 		pm.registerEvent(Type.ENTITY_DAMAGEDBY_ENTITY, entityListener,
 				Priority.Highest, this);
+		pm.registerEvent(Type.ENTITY_EXPLODE, entityListener, Priority.Highest,
+				this);
 
 		// Scheduler
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
