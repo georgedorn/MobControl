@@ -1,4 +1,4 @@
-package com.bukkit.WinSock.MobControl.Listeners;
+package com.WinSock.MobControl.Listeners;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
 
-import com.bukkit.WinSock.MobControl.MobControlPlugin;
+import com.WinSock.MobControl.MobControlPlugin;
 
 public class MobControlEntityListener extends EntityListener {
 	private final MobControlPlugin plugin;

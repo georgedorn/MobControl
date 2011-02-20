@@ -1,4 +1,4 @@
-package com.bukkit.WinSock.MobControl;
+package com.WinSock.MobControl;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +38,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 
-import com.bukkit.WinSock.MobControl.Listeners.MobControlEntityListener;
+import com.WinSock.MobControl.Listeners.MobControlEntityListener;
 
 public class MobControlPlugin extends JavaPlugin {
 
