@@ -71,7 +71,7 @@ public class Creatures {
 		chicken.setMinSpawnHeight(0);
 		chicken.setNatureDay(CreatureNature.PASSIVE);
 		chicken.setNatureNight(CreatureNature.PASSIVE);
-		pig.addSpawnBlocks(Material.values());
+		chicken.addSpawnBlocks(Material.values());
 		chicken.setSpawnRate(70);
 		chicken.setSpawnRoom(2);
 		chicken.setSpawnTime(SpawnTime.BOTH);
@@ -89,7 +89,7 @@ public class Creatures {
 		cow.setMinSpawnHeight(0);
 		cow.setNatureDay(CreatureNature.PASSIVE);
 		cow.setNatureNight(CreatureNature.PASSIVE);
-		pig.addSpawnBlocks(Material.values());
+		cow.addSpawnBlocks(Material.values());
 		cow.setSpawnRate(70);
 		cow.setSpawnRoom(2);
 		cow.setSpawnTime(SpawnTime.BOTH);
@@ -107,7 +107,7 @@ public class Creatures {
 		squid.setMinSpawnHeight(0);
 		squid.setNatureDay(CreatureNature.PASSIVE);
 		squid.setNatureNight(CreatureNature.PASSIVE);
-		pig.addSpawnBlocks(Material.values());
+		squid.addSpawnBlocks(Material.values());
 		squid.setSpawnRate(70);
 		squid.setSpawnRoom(2);
 		squid.setSpawnTime(SpawnTime.BOTH);
@@ -125,7 +125,7 @@ public class Creatures {
 		sheep.setMinSpawnHeight(0);
 		sheep.setNatureDay(CreatureNature.PASSIVE);
 		sheep.setNatureNight(CreatureNature.PASSIVE);
-		pig.addSpawnBlocks(Material.values());
+		sheep.addSpawnBlocks(Material.values());
 		sheep.setSpawnRate(70);
 		sheep.setSpawnRoom(2);
 		sheep.setSpawnTime(SpawnTime.BOTH);
@@ -143,7 +143,7 @@ public class Creatures {
 		pigZombie.setMinSpawnHeight(0);
 		pigZombie.setNatureDay(CreatureNature.NEUTRAL);
 		pigZombie.setNatureNight(CreatureNature.NEUTRAL);
-		pig.addSpawnBlocks(Material.values());
+		pigZombie.addSpawnBlocks(Material.values());
 		pigZombie.setSpawnRate(70);
 		pigZombie.setSpawnRoom(2);
 		pigZombie.setSpawnTime(SpawnTime.BOTH);
@@ -161,7 +161,7 @@ public class Creatures {
 		spider.setMinSpawnHeight(0);
 		spider.setNatureDay(CreatureNature.NEUTRAL);
 		spider.setNatureNight(CreatureNature.AGGRESSIVE);
-		pig.addSpawnBlocks(Material.values());
+		spider.addSpawnBlocks(Material.values());
 		spider.setSpawnRate(70);
 		spider.setSpawnRoom(2);
 		spider.setSpawnTime(SpawnTime.BOTH);
@@ -179,7 +179,7 @@ public class Creatures {
 		zombie.setMinSpawnHeight(0);
 		zombie.setNatureDay(CreatureNature.AGGRESSIVE);
 		zombie.setNatureNight(CreatureNature.AGGRESSIVE);
-		pig.addSpawnBlocks(Material.values());
+		zombie.addSpawnBlocks(Material.values());
 		zombie.setSpawnRate(70);
 		zombie.setSpawnRoom(2);
 		zombie.setSpawnTime(SpawnTime.BOTH);
@@ -197,7 +197,7 @@ public class Creatures {
 		skeleton.setMinSpawnHeight(0);
 		skeleton.setNatureDay(CreatureNature.AGGRESSIVE);
 		skeleton.setNatureNight(CreatureNature.AGGRESSIVE);
-		pig.addSpawnBlocks(Material.values());
+		skeleton.addSpawnBlocks(Material.values());
 		skeleton.setSpawnRate(70);
 		skeleton.setSpawnRoom(2);
 		skeleton.setSpawnTime(SpawnTime.BOTH);
@@ -215,7 +215,7 @@ public class Creatures {
 		creeper.setMinSpawnHeight(0);
 		creeper.setNatureDay(CreatureNature.AGGRESSIVE);
 		creeper.setNatureNight(CreatureNature.AGGRESSIVE);
-		pig.addSpawnBlocks(Material.values());
+		creeper.addSpawnBlocks(Material.values());
 		creeper.setSpawnRate(70);
 		creeper.setSpawnRoom(2);
 		creeper.setSpawnTime(SpawnTime.BOTH);
@@ -233,7 +233,7 @@ public class Creatures {
 		slime.setMinSpawnHeight(0);
 		slime.setNatureDay(CreatureNature.AGGRESSIVE);
 		slime.setNatureNight(CreatureNature.AGGRESSIVE);
-		pig.addSpawnBlocks(Material.values());
+		slime.addSpawnBlocks(Material.values());
 		slime.setSpawnRate(70);
 		slime.setSpawnRoom(2);
 		slime.setSpawnTime(SpawnTime.BOTH);
@@ -251,7 +251,7 @@ public class Creatures {
 		ghast.setMinSpawnHeight(0);
 		ghast.setNatureDay(CreatureNature.AGGRESSIVE);
 		ghast.setNatureNight(CreatureNature.AGGRESSIVE);
-		pig.addSpawnBlocks(Material.values());
+		ghast.addSpawnBlocks(Material.values());
 		ghast.setSpawnRate(70);
 		ghast.setSpawnRoom(2);
 		ghast.setSpawnTime(SpawnTime.BOTH);
