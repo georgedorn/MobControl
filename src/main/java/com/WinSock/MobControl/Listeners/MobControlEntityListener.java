@@ -168,36 +168,6 @@ public class MobControlEntityListener extends EntityListener {
 
 	@Override
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
-		MobType mobType = event.getMobType();
-
-		String enabledNode = "MobControl.Mobs."
-				+ mobType.getName().toUpperCase() + ".Enabled";
-		String burnNode = "MobControl.Mobs." + mobType.getName().toUpperCase()
-				+ ".Day.Burn";
-		String spawnHeightNode = "MobControl.Mobs."
-				+ mobType.getName().toUpperCase() + ".SpawnHeight";
-		String spawnChanceNode = "MobControl.Mobs."
-				+ mobType.getName().toUpperCase() + ".SpawnChance";
-
-		if (!plugin.canSpawn(event.getLocation(), plugin.getConfiguration()
-				.getInt(spawnHeightNode, 0), plugin.getConfiguration()
-				.getBoolean(enabledNode, true), plugin.getConfiguration()
-				.getInt(spawnChanceNode, 100))) {
-			event.setCancelled(true);
-		} else if (plugin.getConfiguration().getBoolean(burnNode, false)) {
-			if (event.getLocation().getWorld().getTime() < 12000
-					|| event.getLocation().getWorld().getTime() == 24000) {
-				if (event
-						.getLocation()
-						.getWorld()
-						.getBlockAt(event.getLocation().getBlockX(),
-								event.getLocation().getBlockY() + 1,
-								event.getLocation().getBlockZ())
-						.getLightLevel() > 7) {
-					Entity e = event.getEntity();
-					e.setFireTicks(20);
-				}
-			}
-		}
+		event.setCancelled(true);
 	}
 }

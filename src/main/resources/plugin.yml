@@ -1,6 +1,6 @@
 name: MobControl
-main: com.bukkit.WinSock.MobControl.MobControlPlugin
-version: 1.4
+main: com.WinSock.MobControl.MobControlPlugin
+version: 1.6
 commands:
   mobc:
     description: Mob Control main command

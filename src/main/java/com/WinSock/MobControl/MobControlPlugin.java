@@ -6,8 +6,9 @@ import java.util.Random;
 import java.util.logging.Logger;
 
 import org.bukkit.Location;
-import org.bukkit.Server;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Cow;
@@ -33,27 +34,22 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 
 import com.WinSock.MobControl.Listeners.MobControlEntityListener;
+import com.WinSock.MobControl.Spawner.Creatures;
+import com.WinSock.MobControl.Spawner.SpawnerCreature;
 
 public class MobControlPlugin extends JavaPlugin {
 
-	MobControlEntityListener entityListener = new MobControlEntityListener(this);
-
-	Logger log = null;
-	private PluginDescriptionFile pdfFile = this.getDescription();
-
-	public MobControlPlugin(PluginLoader pluginLoader, Server instance,
-			PluginDescriptionFile desc, File folder, File plugin,
-			ClassLoader cLoader) {
-		super(pluginLoader, instance, desc, folder, plugin, cLoader);
-	}
+	private MobControlEntityListener entityListener = new MobControlEntityListener(this);
+	public Logger log = null;
+	public Creatures creatures = new Creatures();
 
 	public void onDisable() {
+		PluginDescriptionFile pdfFile = this.getDescription();
 		log.info("[" + pdfFile.getName() + "] Version " + pdfFile.getVersion()
 				+ " is disabled!");
 	}
@@ -76,6 +72,50 @@ public class MobControlPlugin extends JavaPlugin {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	public boolean shouldBurn(Location loc) {
+		if (loc.getWorld().getTime() < 12000
+				|| loc.getWorld().getTime() == 24000) {
+			if (loc.getWorld()
+					.getBlockAt(loc.getBlockX(), loc.getBlockY() + 1,
+							loc.getBlockZ()).getLightLevel() > 7) {
+				if (canSeeSky(loc)) {
+					return true;
+				}
+			}
+
+		}
+		return false;
+	}
+
+	public boolean canSeeSky(Location loc) {
+		for (int i = 128; i >= 0; i++) {
+			if (okBlock(loc.getWorld().getBlockAt(loc.getBlockX(), i,
+					loc.getBlockZ()))) {
+				if (loc.getBlockY() == i) {
+					return true;
+				}
+			} else {
+				break;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isDay(World world)
+	{
+		return world.getTime() < 12000
+		|| world.getTime() == 24000;
+	}
+
+	public boolean okBlock(Block block) {
+		if (block.getType() != Material.AIR
+				|| block.getType() != Material.LEAVES) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 
@@ -182,6 +222,7 @@ public class MobControlPlugin extends JavaPlugin {
 	}
 
 	public void onEnable() {
+		PluginDescriptionFile pdfFile = this.getDescription();
 		log = Logger.getLogger("Minecraft");
 
 		// Load config file
@@ -204,6 +245,7 @@ public class MobControlPlugin extends JavaPlugin {
 				this);
 
 		// Scheduler
+		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SpawnerCreature(this, creatures), 0L, (long)creatures.getSpawnDelay());
 		getServer().getScheduler().scheduleSyncRepeatingTask(this,
 				new Runnable() {
 
@@ -232,21 +274,12 @@ public class MobControlPlugin extends JavaPlugin {
 												if (getConfiguration()
 														.getBoolean(burnNode,
 																false)) {
-													if (w.getTime() < 12000
-															|| w.getTime() == 24000) {
-														if (e.getLocation()
-																.getWorld()
-																.getBlockAt(
-																		e.getLocation()
-																				.getBlockX(),
-																		e.getLocation()
-																				.getBlockY() + 1,
-																		e.getLocation()
-																				.getBlockZ())
-																.getLightLevel() > 7) {
-															e.setFireTicks(20);
-														}
+													if (shouldBurn(e
+															.getLocation())) {
+														e.setFireTicks(20);
 													}
+												} else {
+													e.setFireTicks(0);
 												}
 											}
 										}
